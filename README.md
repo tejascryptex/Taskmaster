@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # README
 
 This README would normally document whatever steps are necessary to get the
@@ -5,7 +6,7 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version = 3.4.4
 
 * System dependencies
 
@@ -22,3 +23,6 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+=======
+# Taskmaster
+>>>>>>> 0295b45e0de20208a98c306c73f33fa6bc59d54a

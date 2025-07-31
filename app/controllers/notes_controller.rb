@@ -19,7 +19,7 @@ class NotesController < ApplicationController
   def edit
   end
 
- 
+
   def create
       @task = Task.find(params[:task_id])
       @note = @task.notes.build(note_params.merge(user: current_user))
@@ -64,5 +64,4 @@ class NotesController < ApplicationController
     def note_params
       params.expect(note: [ :content, :task_id, :user_id ])
     end
-
 end

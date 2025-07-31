@@ -1,16 +1,16 @@
 class ReportsController < ApplicationController
   def index
     tasks = Task.all
-  
+
     @tasks = Task.where("assignee_id = :user_id OR project_id IN (:project_ids)", {
       user_id: current_user.id,
       project_ids: current_user.projects.pluck(:id)
     })
 
     @task_stats = {
-      completed: tasks.where(status: 'Completed').count,
-      in_progress: tasks.where(status: 'In Progress').count,
-      not_started: tasks.where(status: 'Not Started').count,
+      completed: tasks.where(status: "Completed").count,
+      in_progress: tasks.where(status: "In Progress").count,
+      not_started: tasks.where(status: "Not Started").count,
       total: tasks.count
     }
 
@@ -18,7 +18,7 @@ class ReportsController < ApplicationController
 
     @project_progress = Project.includes(:tasks).map do |project|
       total = project.tasks.count
-      completed = project.tasks.where(status: 'Completed').count
+      completed = project.tasks.where(status: "Completed").count
       percent = total > 0 ? (completed * 100 / total) : 0
 
       { name: project.name, percent: percent }

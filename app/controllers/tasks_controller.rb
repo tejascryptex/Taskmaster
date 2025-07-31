@@ -3,7 +3,6 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-
     @tasks = Task.all
     @projects = current_user.projects
     @tasks = Task.where("assignee_id = ? OR project_id IN (?)", current_user.id, @projects.pluck(:id))
@@ -24,7 +23,6 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
-    
   end
 
   # POST /tasks or /tasks.json
@@ -116,11 +114,11 @@ end
       render json: { status: "error", errors: task.errors.full_messages }, status: :unprocessable_entity
     end
   end
-  
+
   def update_status
     task = Task.find(params[:id])
     if task.update(status: params[:status])
-      render json: { message: 'Status updated successfully' }, status: :ok
+      render json: { message: "Status updated successfully" }, status: :ok
     else
       render json: { error: task.errors.full_messages }, status: :unprocessable_entity
     end
@@ -130,7 +128,7 @@ end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-   
+
     def set_task
       @task = Task.find(params[:id])
     end
@@ -140,7 +138,4 @@ end
     def task_params
       params.require(:task).permit(:title, :description, :due_date, :priority, :status, :project_id, :assignee_id, :parent_id, :reminder_at, attachments: [])
     end
-
-
-
 end

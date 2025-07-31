@@ -18,7 +18,7 @@ task = Task.create!(
   status: "Todo",
   assignee_id: user.id,
   project_id: project.id,
-  user_id: user.id 
+  user_id: user.id
 )
 
 Note.create!(

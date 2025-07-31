@@ -29,8 +29,9 @@
   }
 
   body {
+    background: linear-gradient(135deg, #d0f2ff, #ffffff);
     font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--light-bg);
+    
     color: var(--dark-text);
   }
 

@@ -1,26 +1,28 @@
 <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" %>
 <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/flatpickr" %>
 
-<div class="container my-5">
-  <!-- Top bar -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="fw-bold text-primary">
-      <i class="bi bi-list-task me-2"></i>Task Details
+<div class="container py-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <h3 class="fw-bold text-primary mb-2">
+      <i class="bi bi-list-task me-2"></i> Task Details
     </h3>
     <%= link_to "← Back to Dashboard", dashboard_index_path, class: "btn btn-outline-secondary" %>
   </div>
 
-  <div class="card shadow border-0 mb-5">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-start mb-3">
-        <div>
-          <h4 class="fw-semibold mb-2"><%= task.title %></h4>
-          <small class="text-muted">
+  <!-- Task Card -->
+  <div class="card border-0 shadow rounded-4 mb-5">
+    <div class="card-body p-4">
+      <!-- Title + Status -->
+      <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
+        <div class="mb-2">
+          <h4 class="fw-semibold"><%= task.title %></h4>
+          <small class="text-muted d-block">
             <i class="bi bi-calendar-event me-1"></i>
             Due: <%= task.due_date&.strftime('%A, %d %B %Y - %I:%M %p') || 'N/A' %>
           </small>
         </div>
-        <span class="badge bg-<%= task.status == 'Completed' ? 'success' : task.status == 'In Progress' ? 'warning text-dark' : 'secondary' %> fs-6">
+        <span class="badge rounded-pill px-3 py-2 fs-6 mt-2 bg-<%= task.status == 'Completed' ? 'success' : task.status == 'In Progress' ? 'warning text-dark' : 'secondary' %>">
           <%= task.status || "Not Set" %>
         </span>
       </div>
@@ -30,12 +32,12 @@
       <!-- Description -->
       <div class="mb-4">
         <h6 class="text-muted mb-1"><i class="bi bi-card-text me-2"></i>Description</h6>
-        <p class="text-secondary"><%= simple_format(task.description) %></p>
+        <p class="text-secondary mb-0"><%= simple_format(task.description) %></p>
       </div>
 
       <!-- Details -->
       <div class="row mb-4">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <p>
             <strong><i class="bi bi-calendar me-2 text-primary"></i>Due Date:</strong>
             <%= task.due_date&.strftime("%d %B %Y") || "N/A" %>
@@ -48,7 +50,7 @@
                 when 'medium' then 'bg-warning text-dark'
                 when 'low' then 'bg-secondary'
                 else 'bg-light text-muted'
-              end %>">
+              end %> px-3 py-2 rounded-pill">
               <%= task.priority || "Not Set" %>
             </span>
           </p>
@@ -65,20 +67,22 @@
 
       <!-- Time Tracking -->
       <div class="mb-4">
-        <h6 class="text-muted mb-1"><i class="bi bi-clock-history me-2"></i>Time Tracking</h6>
+        <h6 class="text-muted mb-2"><i class="bi bi-clock-history me-2"></i>Time Tracking</h6>
         <% if task.started_at.blank? %>
-          <%= button_to "Start Timer", start_timer_task_path(task), method: :post, class: "btn btn-outline-success btn-sm me-2" %>
+          <%= button_to "Start Timer", start_timer_task_path(task), method: :post, class: "btn btn-outline-success btn-sm me-2 mb-2" %>
         <% elsif task.ended_at.blank? %>
-          <%= button_to "Stop Timer", stop_timer_task_path(task), method: :post, class: "btn btn-outline-danger btn-sm me-2" %>
+          <%= button_to "Stop Timer", stop_timer_task_path(task), method: :post, class: "btn btn-outline-danger btn-sm me-2 mb-2" %>
         <% else %>
-          <p><i class="bi bi-stopwatch me-2"></i><strong><%= pluralize(task.time_spent || 0, "minute") %> tracked</strong></p>
+          <p class="mb-1">
+            <i class="bi bi-stopwatch me-2 text-info"></i><strong><%= pluralize(task.time_spent || 0, "minute") %> tracked</strong>
+          </p>
         <% end %>
-        <p><i class="bi bi-clock me-2"></i>Total Time: <%= pluralize(task.time_spent || 0, "minute") %></p>
+        <p><i class="bi bi-clock me-2 text-secondary"></i>Total Time: <%= pluralize(task.time_spent || 0, "minute") %></p>
       </div>
 
       <!-- Reminder -->
       <div class="mb-4">
-        <h6 class="text-muted mb-1"><i class="bi bi-bell-fill me-2 text-primary"></i>Reminder</h6>
+        <h6 class="text-muted mb-2"><i class="bi bi-bell-fill me-2 text-primary"></i>Reminder</h6>
         <%= form_with model: task, url: task_path(task), method: :patch, local: true, data: { turbo: false } do |f| %>
           <div class="input-group">
             <%= f.text_field :reminder_at, id: "task_reminder_at", class: "form-control", placeholder: "Select reminder time" %>
@@ -88,7 +92,7 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="d-flex justify-content-end gap-2 mt-4">
+      <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
         <%= link_to task_path(task), class: "btn btn-dark btn-sm" do %>
           <i class="bi bi-eye me-1"></i> View
         <% end %>
@@ -103,6 +107,7 @@
   </div>
 </div>
 
+<!-- Flatpickr Initialization -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     flatpickr("#task_reminder_at", {

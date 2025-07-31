@@ -63,4 +63,4 @@ group :test do
 end
 
 gem "devise"
-gem 'brakeman', '~> 7.1.0'
+gem 'brakeman'

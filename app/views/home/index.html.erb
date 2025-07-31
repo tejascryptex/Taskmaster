@@ -1,37 +1,55 @@
 <% content_for :title, "TaskMaster" %>
 
-<!-- Bootstrap Icons CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<!-- Bootstrap Icons & Google Fonts -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
   body {
-    background: linear-gradient(to right, #f3fdf5, #ffffff);
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fbfd;
     color: #333;
+    scroll-behavior: smooth;
+  }
+
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
   }
 
   .hero {
-    padding: 100px 0;
+    padding: 120px 20px;
+    background: linear-gradient(120deg, #d4fc79, #96e6a1);
     text-align: center;
-    background: linear-gradient(135deg, #e8f8f5, #ffffff);
+    color: #0d1b2a;
   }
 
   .hero h1 {
-    font-size: 3.5rem;
-    font-weight: bold;
+    font-size: 3rem;
+    font-weight: 700;
+    animation: fadeInDown 1s ease;
   }
 
   .hero p {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     margin-top: 1rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeInUp 1.2s ease;
   }
 
   .btn-main {
-    padding: 14px 30px;
-    font-weight: 500;
-    border-radius: 8px;
-    margin: 10px;
-    border: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
   }
 
   .btn-orange {
@@ -39,95 +57,89 @@
     color: white;
   }
 
-  .btn-outline-green {
-    background-color: #e8fbf3;
-    color: #30c97c;
+  .btn-orange:hover {
+    background-color: #e5671c;
   }
 
   .features {
-    padding: 80px 0;
-    background-color: #ffffff;
-  }
-
-  .feature-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #0d6efd;
+    padding: 100px 0;
   }
 
   .section-heading {
-    font-size: 2.25rem;
-    font-weight: 600;
     text-align: center;
-    margin-bottom: 40px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 60px;
   }
 
   .feature-box {
     padding: 30px;
-    border-radius: 12px;
-    background: #f9f9f9;
-    box-shadow: 1 4px 20px rgba(0, 0, 0, 0.03);
-    height: 100%;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease;
+  }
+
+  .feature-box:hover {
+    transform: translateY(-8px);
+  }
+
+  .feature-icon {
+    font-size: 2.4rem;
+    color: #0d6efd;
+    margin-bottom: 1rem;
   }
 
   .screenshot-section {
-    padding: 60px 0;
-    background-color: #f3fdf5;
+    background: #effcf6;
+    padding: 100px 0;
+    text-align: center;
   }
 
   .cta-section {
-  background: linear-gradient(135deg, #f0f8ff, #ffffff);
-  padding: 60px 20px;
-  text-align: center;
-  font-family: 'Segoe UI', sans-serif;
-}
- 
-.cta-section h2 {
-  color: #023e8a;
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
- 
-.cta-section p {
-  color: #6c757d;
-  max-width: 700px;
-  margin: 0 auto;
-  font-size: 1.1rem;
-  line-height: 1.7;
-}
- 
+    background: linear-gradient(135deg, #d0f2ff, #ffffff);
+    padding: 100px 20px;
+    text-align: center;
+  }
 
-@media (max-width: 768px) {
   .cta-section h2 {
-    font-size: 1.75rem;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #023e8a;
   }
- 
+
   .cta-section p {
-    font-size: 1rem;
+    font-size: 1.2rem;
+    max-width: 740px;
+    margin: 20px auto;
+    color: #555;
   }
-}
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s ease;
+
+  @keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2rem; }
+    .section-heading { font-size: 2rem; }
+    .cta-section h2 { font-size: 1.8rem; }
   }
 </style>
 
- 
-<nav class="navbar navbar-expand-lg px-4 py-3">
+<nav class="navbar navbar-expand-lg py-3 px-4">
   <div class="container-fluid">
     <a class="navbar-brand fw-bold text-warning" href="#">🌀 TaskMaster</a>
     <div>
       <% if user_signed_in? %>
-        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-outline-danger me-2" %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-outline-danger" %>
       <% else %>
-        <%= link_to "Sign In", new_user_session_path, class: "btn btn-outline-secondary me-2" %>
+        <%= link_to "Sign In", new_user_session_path, class: "btn btn-outline-secondary" %>
       <% end %>
     </div>
   </div>
@@ -136,12 +148,12 @@
 <section class="hero">
   <div class="container">
     <h1>Smarter Task Management</h1>
-    <p>Organize, collaborate, and stay on top of your projects with TaskMaster – the ultimate productivity tool.</p>
+    <p>Organize, collaborate, and get more done — TaskMaster helps your team work better together.</p>
     <div class="mt-4">
       <% if user_signed_in? %>
-        <%= link_to "Go to Dashboard", dashboard_index_path, class: "btn btn-main btn-orange" %>
+        <%= link_to "Go to Dashboard", dashboard_index_path, class: "btn btn-main btn-orange me-2" %>
       <% else %>
-        <%= link_to "Get Started", new_user_registration_path, class: "btn btn-main btn-orange" %>
+        <%= link_to "Get Started Free", new_user_registration_path, class: "btn btn-main btn-orange" %>
       <% end %>
     </div>
   </div>
@@ -149,92 +161,52 @@
 
 <section class="features">
   <div class="container">
-    <h2 class="section-heading">Powerful Features Built for Teams</h2>
+    <h2 class="section-heading">Built for Modern Teams</h2>
     <div class="row g-4">
 
-      <div class="col-md-4">
-        <div class="feature-box text-center">
-          <div class="feature-icon"><i class="bi bi-pencil-square"></i></div>
-          <h5>Task Creation & Projects</h5>
-          <p>Create tasks with descriptions, due dates, assignees, and organize them into projects and sub-tasks.</p>
-        </div>
-      </div>
+      <%# Feature list %>
+      <% features = [
+        ["bi-pencil-square", "Task Creation", "Add detailed tasks, due dates, and organize them in projects."],
+        ["bi-sliders", "Filters & Priorities", "Sort and focus using advanced filters and priority labels."],
+        ["bi-paperclip", "Attachments", "Upload docs, images, and assets directly into tasks."],
+        ["bi-chat-dots", "Real-time Chat", "Collaborate instantly with team discussions and updates."],
+        ["bi-stopwatch", "Time Tracking", "Track how long tasks take to boost productivity."],
+        ["bi-calendar-event", "Calendar Sync", "Visualize your deadlines with Google Calendar integration."],
+        ["bi-graph-up", "Kanban Boards", "Drag-and-drop status with clear progress bars."],
+        ["bi-bar-chart-line", "Analytics", "Track task trends, velocity, and individual performance."]
+      ] %>
 
-      <div class="col-md-4">
-        <div class="feature-box text-center">
-          <div class="feature-icon"><i class="bi bi-sliders"></i></div>
-          <h5>Priorities & Filters</h5>
-          <p>Set priorities (high, medium, low), filter tasks, and stay focused on what matters most.</p>
+      <% features.each do |icon, title, desc| %>
+        <div class="col-sm-6 col-lg-3" data-aos="fade-up">
+          <div class="feature-box text-center h-100">
+            <div class="feature-icon"><i class="bi <%= icon %>"></i></div>
+            <h5 class="fw-semibold"><%= title %></h5>
+            <p><%= desc %></p>
+          </div>
         </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="feature-box text-center">
-          <div class="feature-icon"><i class="bi bi-paperclip"></i></div>
-          <h5>Notes & Attachments</h5>
-          <p>Attach documents and jot down notes right inside your tasks to keep everything in context.</p>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="feature-box text-center">
-          <div class="feature-icon"><i class="bi bi-chat-dots"></i></div>
-          <h5>Collaboration</h5>
-          <p>Comment, chat, and share files with teammates in real-time. Stay in sync effortlessly.</p>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="feature-box text-center">
-          <div class="feature-icon"><i class="bi bi-stopwatch"></i></div>
-          <h5>Time Tracking</h5>
-          <p>Track time spent on tasks, set reminders, and get notified before deadlines hit.</p>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="feature-box text-center">
-          <div class="feature-icon"><i class="bi bi-calendar-event"></i></div>
-          <h5>Calendar & Scheduling</h5>
-          <p>Integrate your calendar, visualize commitments, and never miss a deadline again.</p>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="feature-box text-center">
-          <div class="feature-icon"><i class="bi bi-graph-up"></i></div>
-          <h5>Progress Visualization</h5>
-          <p>Track task status with Kanban boards and  progress bars.</p>
-        </div>
-      </div>
-
-  
-      <div class="col-md-4">
-        <div class="feature-box text-center">
-          <div class="feature-icon"><i class="bi bi-bar-chart-line"></i></div>
-          <h5>Reports & Analytics</h5>
-          <p>Generate detailed reports on task progress, time usage, and team productivity.</p>
-        </div>
-      </div>
+      <% end %>
 
     </div>
   </div>
 </section>
 
-<section class="screenshot-section text-center">
+<section class="screenshot-section">
   <div class="container">
-    <h2 class="mb-5">See It In Action</h2>
-    <%= image_tag "dashboard.jpg", class: "img-fluid rounded shadow-sm", alt: "Dashboard Screenshot" %>
+    <h2 class="section-heading">Your Dashboard at a Glance</h2>
+    <%= image_tag "dashboard.jpg", class: "img-fluid rounded shadow-lg", alt: "Dashboard UI" %>
   </div>
 </section>
 
-<section class="cta-section text-center py-5" style="background: linear-gradient(135deg, #f0f8ff, #ffffff);">
+<section class="cta-section">
   <div class="container">
-    <h2 class="fw-bold mb-3" style="color: #023e8a;">Start Managing Your Tasks Today</h2>
-    <p class="mb-4 text-muted" style="max-width: 700px; margin: 0 auto; font-size: 1.1rem;">
-      TaskMaster is your all-in-one productivity hub — create tasks, set priorities, track deadlines, and collaborate with your team effortlessly. Whether you're managing a project, a daily routine, or a remote team, TaskMaster helps you stay organized and get things done faster.
-    </p>
- 
+    <h2>Start Managing Smarter Today</h2>
+    <p>Sign up for free and unlock your team’s productivity potential. With TaskMaster, organizing your work becomes effortless.</p>
+    <%= link_to "Create Free Account", new_user_registration_path, class: "btn btn-main btn-orange mt-3" %>
   </div>
 </section>
 
+<!-- AOS for animations -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 1000 });
+</script>

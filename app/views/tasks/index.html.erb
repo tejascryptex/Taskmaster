@@ -1,0 +1,10 @@
+<% content_for :title, "Tasks" %>
+
+<div id="tasks">
+  <% @tasks.each do |task| %>
+    <%= render task %>
+    <hr>
+  <% end %>
+</div>
+
+

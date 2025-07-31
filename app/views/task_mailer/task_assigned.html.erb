@@ -1,0 +1,13 @@
+<h2>Hello <%= @user.email %>,</h2>
+
+<p>You’ve been assigned a new task:</p>
+
+<ul>
+  <li><strong>Title:</strong> <%= @task.title %></li>
+  <li><strong>Due Date:</strong> <%= @task.due_date&.strftime('%B %d, %Y') %></li>
+  <li><strong>Description:</strong> <%= @task.description %></li>
+</ul>
+
+<p><%= link_to "View Task", task_url(@task) %></p>
+
+<p>— Taskmaster Team</p>

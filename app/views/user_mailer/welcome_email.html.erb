@@ -1,0 +1,29 @@
+<div style="font-family: 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: auto; padding: 30px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">
+  <h2 style="color: #0d6efd;">👋 Welcome, <%= @user.email %>!</h2>
+
+  <p style="font-size: 16px; color: #333;">
+    We're thrilled to have you on board. TaskMaster is your new home for organizing tasks, projects, and productivity!
+  </p>
+
+  <p style="font-size: 16px;">
+    👉 Start managing your tasks here:
+  </p>
+
+  <p style="margin: 20px 0;">
+    <a href="<%= @url %>" style="background-color: #0d6efd; color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; display: inline-block;">
+      Visit TaskMaster Dashboard
+    </a>
+  </p>
+
+  <p style="font-size: 15px; color: #555;">
+    If the button doesn't work, copy and paste this URL in your browser:<br>
+    <a href="<%= @url %>" style="color: #0d6efd;"><%= @url %></a>
+  </p>
+
+  <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;" />
+
+  <p style="font-size: 14px; color: #888;">
+    🚀 Happy working!<br>
+    — Team <strong>TaskMaster</strong>
+  </p>
+</div>

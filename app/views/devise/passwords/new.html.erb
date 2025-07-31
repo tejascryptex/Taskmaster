@@ -1,0 +1,97 @@
+<% content_for :title, "Forgot Password" %>
+
+<style>
+  body {
+    background: linear-gradient(to right, #f3fdf5, #ffffff);
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+  }
+
+  .reset-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .reset-card {
+    max-width: 420px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+  }
+
+  .reset-card h2 {
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #333;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    padding: 10px 15px;
+  }
+
+  .btn-main {
+    background-color: #ff7b29;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+  }
+
+  .btn-main:hover {
+    background-color: #ff6710;
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .actions {
+    margin-top: 20px;
+  }
+
+  .devise-links {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .devise-links a {
+    color: #30c97c;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .devise-links a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="reset-container">
+  <div class="reset-card">
+    <h2>Forgot  password?</h2>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="field">
+        <%= f.label :email %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Send reset instructions", class: "btn btn-main" %>
+      </div>
+    <% end %>
+
+    <div class="devise-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

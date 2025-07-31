@@ -1,0 +1,17 @@
+<div class="alert alert-warning auto-dismiss position-fixed start-50 translate-middle-x mt-3 shadow"
+     style="z-index: 1050; max-width: 90%; width: auto; top: 70px;" role="alert">
+  <%= notice %>
+</div>
+
+<script>
+  // Automatically dismiss the alert after 2 seconds (2000 ms)
+  setTimeout(function () {
+    const alert = document.querySelector('.auto-dismiss');
+    if (alert) {
+      alert.classList.add('fade'); // Bootstrap fade out
+      setTimeout(function () {
+        alert.remove();
+      }, 200); // Wait for fade transition (can be adjusted)
+    }
+  }, 2000);
+</script>

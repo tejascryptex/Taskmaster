@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= content_for(:title) || "Taskmaster" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="csrf-token" content="<%= form_authenticity_token %>">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= yield :head %>
+
+  <link rel="icon" href="/logo1.png" type="image/png">
+
+  <%= stylesheet_link_tag :application, "data-turbo-track": "reload" %>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' %>
+
+  <!-- No turbo -->
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+
+<body>
+  <%= yield %>
+
+  <!-- Flash Message -->
+  <div id="flash-message" style="position: fixed; top: 90px; left: 50%; transform: translateX(-50%); z-index: 9999; min-width: 250px;">
+    <% if notice %>
+      <div class="alert alert-success shadow-sm" role="alert">
+        <%= notice %>
+      </div>
+    <% elsif alert %>
+      <div class="alert alert-danger shadow-sm" role="alert">
+        <%= alert %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render 'layouts/footer' %>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const flash = document.getElementById("flash-message");
+      if (flash) {
+        setTimeout(() => {
+          flash.style.transition = "opacity 0.5s ease";
+          flash.style.opacity = 0;
+          setTimeout(() => flash.remove(), 500);
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>

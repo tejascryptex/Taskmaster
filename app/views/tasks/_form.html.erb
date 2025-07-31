@@ -1,0 +1,101 @@
+<% content_for :title, "Create Task" %>
+
+
+<%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" %>
+<%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" %>
+
+<div class="d-flex align-items-center justify-content-center py-5" style="min-height: 100vh;  font-family: 'Inter', sans-serif;">
+  <div class="card shadow-lg p-4 glass-bg text-dark w-100" style="max-width: 800px; border-radius: 1rem;">
+
+    <h2 class="mb-4 text-center fw-bold text-primary">Create Task</h2>
+
+    <%= form_with(model: task, local: true) do |form| %>
+      <% if task.errors.any? %>
+        <div class="alert alert-danger">
+          <h6 class="alert-heading">Please fix the following errors:</h6>
+          <ul class="mb-0">
+            <% task.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <%= form.label :title, class: "form-label" %>
+          <%= form.text_field :title, class: "form-control", placeholder: "Enter task title" %>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <%= form.label :project_id, "Project", class: "form-label" %>
+          <%= form.collection_select :project_id, Project.all, :id, :name, { prompt: "Select a project" }, class: "form-select" %>
+        </div>
+
+        <div class="col-md-12 mb-3">
+          <%= form.label :description, class: "form-label" %>
+          <%= form.text_area :description, class: "form-control", rows: 3, placeholder: "Enter task details..." %>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <%= form.label :due_date, class: "form-label" %>
+          <div class="input-group">
+            <%= form.text_field :due_date, id: "task_due_date", class: "form-control", placeholder: "Select due date" %>
+            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <%= form.label :reminder_at, "Reminder", class: "form-label" %>
+          <div class="input-group">
+            <%= form.text_field :reminder_at, id: "task_reminder_at", class: "form-control", placeholder: "Pick reminder time" %>
+            <span class="input-group-text"><i class="bi bi-bell"></i></span>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <%= form.label :priority, class: "form-label" %>
+          <%= form.select :priority, ['Low', 'Medium', 'High'], { prompt: "Select Priority" }, class: "form-select" %>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <%= form.label :status, class: "form-label" %>
+          <%= form.select :status, ['Not Started', 'In Progress', 'Completed'], { prompt: "Select Status" }, class: "form-select" %>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <%= form.label :assignee_id, "Assign to", class: "form-label" %>
+          <%= form.collection_select :assignee_id, User.all, :id, :email, { prompt: "Select user" }, class: "form-select" %>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-3">
+        <%= form.submit "Save Task", class: "btn btn-primary px-4 py-2 fw-semibold" %>
+      </div>
+      <div class="d-flex justify-content-end mt-3">
+        <%= link_to dashboard_index_path, class: "btn btn-primary" do %>
+          <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<%= javascript_include_tag "https://cdn.jsdelivr.net/npm/flatpickr" %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    flatpickr("#task_due_date", {
+      enableTime: false,
+      dateFormat: "Y-m-d",
+      minDate: "today"
+    });
+
+    flatpickr("#task_reminder_at", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      minDate: "today"
+    });
+  });
+</script>

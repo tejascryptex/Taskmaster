@@ -1,0 +1,183 @@
+<% content_for :title, "TaskMaster-Dashboard" %>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-2 p-0 sidebar bg-light">
+      <div class="p-4">
+        <%= link_to root_path, class: "text-warning text-decoration-none fw-bold h5 d-block mb-4" do %>
+          🌀TaskMaster
+        <% end %>
+
+        <div class="text-center mb-4">
+          <%= image_tag "default_avtar.jpeg", class: "rounded-circle border border-2 border-primary", width: 70, height: 70 %>
+          <p class="mt-2 mb-0 fw-semibold"><%= current_user.email %></p>
+        </div>
+
+        <ul class="nav flex-column">
+          <li class="nav-item"><%= link_to dashboard_index_path, class: "nav-link active" do %><i class="fas fa-th-large"></i> Dashboard <% end %></li><br>
+          <li class="nav-item"><%= link_to projects_path, class: "nav-link" do %><i class="fas fa-project-diagram"></i> Projects <% end %></li>
+          <li class="nav-item"><%= link_to tasks_path, class: "nav-link" do %><i class="fas fa-tasks"></i> Tasks <% end %></li>
+          <li class="nav-item"><%= link_to notes_path, class: "nav-link" do %><i class="fas fa-sticky-note"></i> Notes <% end %></li>
+          <li class="nav-item"><%= link_to reports_path, class: "nav-link", data: { turbo: false } do %><i class="fas fa-chart-line"></i> Reports <% end %></li>
+          <li class="nav-item"><%= link_to calendar_tasks_path, class: "nav-link", data: { turbo: false } do %><i class="fas fa-calendar-alt"></i> Calendar<% end %></li>
+          <li class="nav-item mt-4"><%= button_to destroy_user_session_path, method: :delete, class: "btn btn-outline-warning w-100" do %><i class="fas fa-sign-out-alt"></i> Logout <% end %></li>
+        </ul>
+      </div>
+    </div>
+
+
+
+    <div class="col-md-7 py-4 px-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold">Task Board</h4>
+        <%= link_to "New Task", new_task_path, class: "btn btn-primary" %>
+      </div>
+      <div class="mb-4">
+        <%= form_with url: dashboard_index_path, method: :get, local: true, class: "row g-3 align-items-end" do %>
+          <div class="col-md-5">
+            <%= label_tag :priority, "", class: "form-label fw-semibold" %>
+            <%= select_tag :priority, options_for_select(["All", "High", "Medium", "Low"], params[:priority]), class: "form-select" %>
+          </div>
+          <div class="col-auto">
+            <%= submit_tag "Apply", class: "btn btn-outline-primary" %>
+            <%= link_to "Reset", dashboard_index_path, class: "btn btn-outline-secondary ms-2" %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="kanban-wrapper d-flex flex-wrap gap-3">
+        <% ["Not Started", "In Progress", "Completed"].each do |status| %>
+          <div class="kanban-col task-column kanban-col-<%= status.parameterize %> flex-grow-1" data-status="<%= status %>">
+            <div class="column-title fw-semibold mb-2"><%= status %></div>
+
+            <% (@tasks_by_status[status] || []).each do |task| %>
+              <div class="task-card mb-3 p-3 rounded shadow-sm bg-white" data-task-id="<%= task.id %>">
+                <h6 class="fw-semibold mb-1"><%= task.title %></h6>
+                <p class="small text-muted mb-2"><%= truncate(task.description, length: 70) %></p>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div>
+                    <span class="badge badge-priority badge-<%= task.priority.to_s.downcase %> me-2"><%= task.priority %></span>
+                    <% if task.project %>
+                      <span class="badge bg-info-subtle text-info"><%= task.project.name %></span>
+                    <% end %>
+                  </div>
+                  <%= link_to "View", task_path(task), class: "btn btn-sm btn-outline-primary" %>
+                </div>
+
+                <% if task.due_date %>
+                  <div class="task-meta small text-muted">
+                    <i class="far fa-calendar-alt me-1"></i> Due: <%= task.due_date.strftime("%b %d") %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Sidebar Right Panel -->
+    <div class="col-md-3 py-4 px-3">
+      <div class="panel-card text-center mb-4">
+        <h6 class="mb-3">Overall Completion</h6>
+        <% total = @projects.sum { |p| p.tasks.count } %>
+        <% done = @projects.sum { |p| p.tasks.count { |t| t.status.to_s.downcase == "completed" } } %>
+        <% percent = total > 0 ? (done * 100 / total) : 0 %>
+
+        <div class="progress-circle my-3 position-relative">
+          <strong class="position-absolute top-50 start-50 translate-middle"><%= percent %>%</strong>
+          <svg width="80" height="80">
+            <circle cx="40" cy="40" r="35" stroke="#e9ecef" stroke-width="8" fill="none" />
+            <circle cx="40" cy="40" r="35" stroke="#198754" stroke-width="8" stroke-dasharray="<%= percent * 2.2 %>, 220" fill="none" transform="rotate(-90 40 40)" />
+          </svg>
+        </div>
+        <p class="text-muted mb-0"><small><%= done %> of <%= total %> tasks completed</small></p>
+      </div>
+
+      <div class="panel-card mb-4">
+        <h6 class="card-title"><i class="fas fa-bolt me-2"></i> Quick Actions</h6>
+        <div class="d-grid gap-2">
+          <%= link_to "Create New Project", new_project_path, class: "btn btn-outline-success btn-sm" %>
+          <%= link_to "View All Projects", projects_path, class: "btn btn-outline-secondary btn-sm" %>
+        </div>
+      </div>
+
+      <div class="panel-card mt-4">
+        <h6 class="card-title"><i class="fas fa-lightbulb me-2"></i> Productivity Tip</h6>
+        <blockquote class="blockquote mb-0 small text-muted">
+          “Plan your work, then work your plan.”
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  .progress-circle svg {
+    transform: rotate(-90deg);
+  }
+
+  .panel-card {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .badge-priority-high {
+    background-color: #dc3545;
+  }
+
+  .badge-priority-medium {
+    background-color: #ffc107;
+  }
+
+  .badge-priority-low {
+    background-color: #6c757d;
+  }
+
+  .kanban-wrapper {
+    overflow-x: auto;
+  }
+
+  .kanban-col {
+    min-width: 300px;
+    max-width: 340px;
+  }
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.task-column').forEach(column => {
+      new Sortable(column, {
+        group: 'tasks',
+        animation: 150,
+        onAdd: function (event) {
+          const taskId = event.item.dataset.taskId;
+          const newStatus = event.to.dataset.status;
+
+          fetch("/tasks/update_status", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ id: taskId, status: newStatus })
+          }).then(res => {
+            if (!res.ok) {
+              alert("Failed to update task status");
+            }
+          });
+        }
+      });
+    });
+  });
+</script>
